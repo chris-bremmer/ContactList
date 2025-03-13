@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using ContactList.Data;
+using ContactList.Models;
 
 namespace ContactList.Controllers
 {
@@ -16,10 +17,20 @@ namespace ContactList.Controllers
 		}
 
 		// GET: Contacts
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Contacts()
 		{
 			var contacts = await _context.Contacts.Include(c => c.User).ToListAsync();
 			return View(contacts);
+		}
+
+		// GET: Create
+		public IActionResult Create()
+		{
+			var contact = new Contact
+			{
+				IsActive = true // Set default value
+			};
+			return View(contact);
 		}
 
 	}
