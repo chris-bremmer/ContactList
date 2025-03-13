@@ -7,7 +7,7 @@
 <h1>Contacts</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">New Contact</a>
 </p>
 <table class="table">
     <thead>
@@ -43,7 +43,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                <a href="@item.Email">@Html.DisplayFor(modelItem => item.Email)</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Phone)
@@ -61,9 +61,9 @@
                 @Html.DisplayFor(modelItem => item.Modified)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ContactId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ContactId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ContactId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.ContactId" class="btn btn-sm btn-primary">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ContactId" class="btn btn-sm btn-success">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ContactId" class="btn btn-sm btn-danger">Delete</a>
             </td>
         </tr>
 }

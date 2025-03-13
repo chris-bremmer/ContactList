@@ -19,7 +19,8 @@ namespace ContactList.Controllers
 		// GET: Contacts
 		public async Task<IActionResult> Contacts()
 		{
-			var contacts = await _context.Contacts.Include(c => c.User).ToListAsync();
+			int userId = GetUserId();
+			var contacts = await _context.Contacts.Where(c => c.UserId == userId).ToListAsync();
 			return View(contacts);
 		}
 
@@ -32,6 +33,14 @@ namespace ContactList.Controllers
 			};
 			return View(contact);
 		}
+		// GET: Edit
+		[Route("Contacts/Edit/{contactId}")]
+		public IActionResult Edit(int contactId)
+		{
+			var contact = _context.Contacts.Where(c => c.ContactId == contactId & c.UserId == GetUserId()).FirstOrDefault();
+
+			return View(contact);
+		}
 		// POST: Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -39,7 +48,7 @@ namespace ContactList.Controllers
 		{
 			contact.Created = DateTime.Now;
 			contact.Modified = DateTime.Now;
-			contact.UserId = (int)HttpContext.Session.GetInt32("UserId");
+			contact.UserId = GetUserId();
 			if (ModelState.IsValid)
 			{
 				_context.Add(contact);
