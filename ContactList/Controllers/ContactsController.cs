@@ -32,6 +32,27 @@ namespace ContactList.Controllers
 			};
 			return View(contact);
 		}
+		// POST: Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create(Contact contact)
+		{
+			contact.Created = DateTime.Now;
+			contact.Modified = DateTime.Now;
+			contact.UserId = (int)HttpContext.Session.GetInt32("UserId");
+			if (ModelState.IsValid)
+			{
+				_context.Add(contact);
+				await _context.SaveChangesAsync();
+				return View("Contacts");
+			}
+			return View(contact);
+		}
+
+		private int GetUserId()
+		{
+			return HttpContext.Session.GetInt32("UserId") ?? 0;
+		}
 
 	}
 }
