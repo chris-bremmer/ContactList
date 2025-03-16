@@ -34,6 +34,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href="~/test.asp">Classic Page</a>
+                            </li>
                         }
                         @if (Context.Session.GetInt32("UserId") is null)
                         {

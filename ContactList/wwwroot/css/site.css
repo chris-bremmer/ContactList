@@ -29,6 +29,9 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+.right {
+    text-align: right;
+}   
 .btn {
-    margin-top: 10px;
+    margin-top: 6px;
 }
