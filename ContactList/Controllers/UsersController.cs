@@ -65,6 +65,8 @@ namespace ContactList.Controllers
 					.FirstOrDefaultAsync();
 				if (user != null && user.UserId > 0 && user.Password == new Crypto().Encrypt(userLogin.Password))
 				{
+					//Clear any existing session data
+					_session.Clear(user.UserId);
 					// Store user information in session
 					_session.Set(user.UserId, "UserEmail", user.Email);
 					_session.Set(user.UserId, "UserId", user.UserId.ToString());

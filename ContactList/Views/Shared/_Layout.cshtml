@@ -26,7 +26,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if(Context.Session.GetInt32("UserId") != null)
+                        @if(Context.Request.Cookies["UserId"] != null)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Contacts" asp-action="Contacts">Contacts</a>
@@ -38,7 +38,7 @@
                                 <a class="nav-link text-dark" href="~/test.asp">Classic Page</a>
                             </li>
                         }
-                        @if (Context.Session.GetInt32("UserId") is null)
+                        @if (Context.Request.Cookies["UserId"] is null)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Register">Register</a>

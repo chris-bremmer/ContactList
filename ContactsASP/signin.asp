@@ -6,29 +6,13 @@
 <h2>Sign In</h2>
 
 <%set usr = new UserSettings%>
-<%if usr.UserID <> "" then
-        Response.Write("<p>You are already signed in as " & usr.UserID & "</p>")        
-end if%>
 
-<form action="signin.asp" method="post" class="form-horizontal">
-    <div class="row">
-        <div class="col-md-6">
-            <label>Email</label>
-            <input type="text" id="email" name="email" class="form-control" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <label>Password</label>
-            <input type="password" id="password" name="password" class="form-control" />
-        </div>
-    </div>
-        <div class="row">
-        <div class="col-md-6">
-            <input type="submit" value="Sign In" class="btn btn-success" />
-        </div>
-    </div>
-</form>
+<%if usr.UserID <> "" then
+    Response.Write("<p>You are already signed in as a user with ID '" & usr.UserID & "'</p>")
+    Response.Write("<p>You can view the contacts list <a href=""contacts.asp"">here</a></p>")
+else
+    Response.Write("<p>You are not signed in. Please sign in through the CORE site.</p>")
+end if%>
 
 
 <!--#include file="resources/footer.inc"-->

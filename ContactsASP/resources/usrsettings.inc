@@ -2,16 +2,15 @@
 Class UserSettings
 
     Public Property Let UserID(id)
-      SetSetting "UserID", id
+      SetSetting "UserId", id
    End Property 
    Public Property Get UserID()
-      UserID = GetSetting("UserID")
+      UserID = GetSetting("UserId")
    End Property
 
     private function GetSetting(Key)
         dim result
         result = ""
-        on error resume next
         result = Request.Cookies(Key)
 
         GetSetting = result

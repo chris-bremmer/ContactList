@@ -6,6 +6,7 @@ using ContactList.Data;
 using ContactList.Models;
 using System;
 using ContactList.Utility;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ContactList.Controllers
 {
@@ -25,12 +26,12 @@ namespace ContactList.Controllers
 		public async Task<IActionResult> Contacts()
 		{
 			int userId = GetUserId();
-			var contacts = await _context.Contacts.Where(c => c.UserId == userId & (c.IsActive == true & c.Favourite == true)).ToListAsync();
-			ContactListViewModel model = new ContactListViewModel(contacts);
-			model.Favourites = true;
-			model.Active = true;	
+				var contacts = await _context.Contacts.Where(c => c.UserId == userId & (c.IsActive == true & c.Favourite == true)).ToListAsync();
+				ContactListViewModel model = new ContactListViewModel(contacts);
+				model.Favourites = true;
+				model.Active = true;
 
-			return View(model);
+				return View(model);
 		}
 
 		// GET: Contacts
@@ -131,6 +132,12 @@ namespace ContactList.Controllers
 			return View(contact);
 		}
 
+		/// <summary>
+		/// Return a user id of the logged in user.
+		/// If there is none, then direct to login, 
+		/// since being logged in is required for most everything on this page.
+		/// </summary>
+		/// <returns>The ID of the logged in user</returns>
 		private int GetUserId()
 		{
 			int result = 0;
@@ -138,6 +145,11 @@ namespace ContactList.Controllers
 			if (userId != null)
 			{
 				int.TryParse(userId, out result);
+			}
+			if (result == 0)
+			{
+				var loginUrl = Url.Action("Login", "Users").ToString();
+				Response.Redirect(loginUrl);
 			}
 			return result;
 		}

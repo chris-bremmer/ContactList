@@ -4,10 +4,10 @@ Class DatabaseHelper
     Private connString
 
     ' Constructor
-    Private Sub Class_Initialize(connectionString)
+    Private Sub Class_Initialize()
         Set conn = CreateObject("ADODB.Connection")
         connString = ConnectionString
-    End Sub
+    End Sub 
 
     ' Destructor
     Private Sub Class_Terminate()
@@ -22,18 +22,18 @@ Class DatabaseHelper
     private function ConnectionString()
         dim filePath
         filePath = Server.MapPath("connection.txt")
-        filepath = Replace(filepath,"ContactsASP","connection")
+        filepath = Replace(filepath,"ContactList\ContactsASP","connection")
         Set objFileToRead = CreateObject("Scripting.FileSystemObject").OpenTextFile(filePath,1)
         sqlConnect = objFileToRead.ReadAll()
         objFileToRead.Close
         Set objFileToRead = Nothing
-        Connection = sqlConnect
+        ConnectionString = sqlConnect
     end function
 
     ' Open connection
     Public Sub OpenConnection()
         If conn.State = 0 Then 
-            conn.Open connString
+            conn.Open ConnectionString
         End If
     End Sub
 
