@@ -10,10 +10,12 @@ namespace ContactList.Controllers
 	public class UsersController : Controller
 	{
 		private readonly ApplicationDbContext _context;
+		private readonly DBSession _session;
 
 		public UsersController(ApplicationDbContext context)
 		{
 			_context = context;
+			_session = new DBSession(context);
 		}
 
 		// GET: Users/Register
@@ -40,7 +42,8 @@ namespace ContactList.Controllers
 		// GET: Users/Logout
 		public IActionResult Logout()
 		{
-			HttpContext.Session.Clear();
+			_session.Clear(GetUserId());
+			HttpContext.Response.Cookies.Delete("UserID");
 			return RedirectToAction(nameof(Index), "Home");
 		}
 
@@ -63,15 +66,26 @@ namespace ContactList.Controllers
 				if (user != null && user.UserId > 0 && user.Password == new Crypto().Encrypt(userLogin.Password))
 				{
 					// Store user information in session
-					HttpContext.Session.SetInt32("UserId", user.UserId);
-					HttpContext.Session.SetString("UserEmail", user.Email);
-
+					_session.Set(user.UserId, "UserEmail", user.Email);
+					_session.Set(user.UserId, "UserId", user.UserId.ToString());
+					HttpContext.Response.Cookies.Append("UserID", user.UserId.ToString());
 					return RedirectToAction(nameof(Index), "Home");
 				}
 			}
 
 				ModelState.AddModelError(string.Empty, "Invalid login attempt.");
 				return View(userLogin);
+		}
+
+		private int GetUserId()
+		{
+			int result = 0;
+			string ?userId = HttpContext.Request.Cookies["UserId"];
+			if (userId != null)
+			{
+				int.TryParse(userId, out result);
+			}
+			return result;
 		}
 	}
 }

@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using ContactList.Data;
 using ContactList.Models;
 using System;
+using ContactList.Utility;
 
 namespace ContactList.Controllers
 {
 	public class ContactsController : Controller
 	{
 		private readonly ApplicationDbContext _context;
+		private readonly DBSession _session;
 
 		public ContactsController(ApplicationDbContext context)
 		{
 			_context = context;
+			_session = new DBSession(context);
 		}
 
 
@@ -130,7 +133,13 @@ namespace ContactList.Controllers
 
 		private int GetUserId()
 		{
-			return HttpContext.Session.GetInt32("UserId") ?? 0;
+			int result = 0;
+			string? userId = HttpContext.Request.Cookies["UserId"];
+			if (userId != null)
+			{
+				int.TryParse(userId, out result);
+			}
+			return result;
 		}
 
 	}
