@@ -18,6 +18,7 @@
         else
             GetUserID = 0
         end if
-end function
+
+    end function
 
 %>

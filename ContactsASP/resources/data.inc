@@ -46,6 +46,7 @@ Class DatabaseHelper
 
     ' Execute a query
     Public Function ExecuteQuery(query)
+        OpenConnection
         Dim rs
         Set rs = CreateObject("ADODB.Recordset")
         rs.Open query, conn

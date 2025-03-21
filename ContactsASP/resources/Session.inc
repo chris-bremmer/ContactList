@@ -1,49 +1,75 @@
 <%
 Class Session
 
-    dim _sessionID
-    dim _userID
-    dim _key
-    dim _value
+    private psessionID
+    private puserID
+    private pkey
+    private pvalue
+
+    ' Constructor
+    Private Sub Class_Initialize(Userid, Key, Value)
+        psessionID = 0
+        puserID = Userid
+        pkey = Key
+        pvalue = Value
+        SaveValue
+    End Sub 
 
    Public Property Let SessionID(value)
-      _sessionID = value
+      psessionID = value
    End Property 
    Public Property Get SessionID()
-      SessionID = _sessionID
+      SessionID = psessionID
    End Property
 
    Public Property Let UserID(value)
-      _userID = value
+      puserID = value
    End Property 
    Public Property Get UserID()
-      UserID = _userID
+      UserID = puserID
    End Property
 
    Public Property Let Key(value)
-      _key = value
+      pkey = value
    End Property 
    Public Property Get Key()
-      Key = _key
+      Key = pkey
    End Property
 
    Public Property Let Value(val)
-      _value = val
+      pvalue = val
    End Property 
    Public Property Get Value()
-      Value = _value
+      Value = pvalue
    End Property
 
-   public SaveValue(userID, Key, value)
+
+   public function GetValue(UserID, Key)
+    dim result
         dim conn
         dim db
         dim query
         dim rs
         dim sql
-        dim result
-        result = false
-        Set db = New DatabaseHelper(Connection)
-        db.OpenConnection
+        Set db = New DatabaseHelper()
+        sql = "SELECT * FROM UserSettings WHERE UserID = " & UserID & " AND [Key] = '" & Key & "'"
+        Set rs = db.ExecuteQuery(sql)
+        if rs.EOF then
+            result = ""
+        else
+            result = rs("Value")
+        end if
+        db.CloseConnection
+        GetValue = result
+   end function
+
+   public sub SaveValue(userID, Key, value)
+        dim conn
+        dim db
+        dim query
+        dim rs
+        dim sql
+        Set db = New DatabaseHelper()
         sql = "SELECT * FROM UserSettings WHERE UserID = " & userID & " AND [Key] = '" & Key & "'"
         Set rs = db.ExecuteQuery(sql)
         if rs.EOF then
@@ -53,11 +79,7 @@ Class Session
         end if
         db.ExecuteNonQuery(query)
         db.CloseConnection
-        result = true
-        SaveValue = result
    end function)
-
-
 
 End Class
 %>

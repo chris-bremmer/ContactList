@@ -34,7 +34,7 @@
                         </tr>
                         <%do while not rs.eof %>
                         <tr>
-                            <td><%=rs("name")%></td>
+                            <td><a href="contact.asp?id=<%=rs("ContactId")%>"><%=rs("name")%></a></td>
                             <td><a href="mailto:<%=rs("Email")%><"><%=rs("Email")%></a></td>
                             <td><a href="tel:<%=rs("Phone")%></a>"><%=rs("Phone")%></a></td>
                             <td><input type="checkbox" onclick="return false" <%if rs("favourite") then%> checked="checked"<%end if%> />&nbsp</td>
