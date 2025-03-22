@@ -13,7 +13,7 @@
 			@Html.LabelFor(model => model.Favourites, "Favourites")
 			@Html.CheckBoxFor(model => model.Active, new { id = "active" })
 			@Html.LabelFor(model => model.Active, "Active")
-
+			@Html.TextBoxFor(model => model.SearchString, new { placeholder = "Search" })
 			<input type="submit" value="Filter" class="btn btn-secondary" />
 		</div>
 		<div class="col-sm-6 right">

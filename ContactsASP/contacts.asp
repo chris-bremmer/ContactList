@@ -1,7 +1,4 @@
-<!--#include file="resources/globals.inc"-->
 <!--#include file="resources/header.inc"-->
-<!--#include file="resources/usrsettings.inc"-->
-<!--#include file="resources/data.inc"-->
 <%
     dim userID
     userID = GetUserID()
@@ -11,9 +8,8 @@
     dim db
     set db = new DatabaseHelper
     dim sql
-    sql = "select * from contacts where userid=1 order by name"
+    sql = "select * from contacts where userid=" & getuserid & " order by name"
     sql = replace(sql,"@userid", userID)
-    response.Write(sql)
     db.OpenConnection
     set rs = db.ExecuteQuery(sql)
 %>

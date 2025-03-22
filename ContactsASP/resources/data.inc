@@ -55,6 +55,7 @@ Class DatabaseHelper
 
     ' Execute a non-query (INSERT, UPDATE, DELETE)
     Public Sub ExecuteNonQuery(query)
+        OpenConnection
         conn.Execute query
     End Sub
 End Class

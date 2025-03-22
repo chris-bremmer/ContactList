@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactList", "ContactList\ContactList.csproj", "{A7F2DA28-3403-4043-955E-3468736B5B38}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ContactsASP", "ContactsASP\", "{8E43D77C-5F7D-4233-A02B-E879B2113545}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ContactsASP(1)", "ContactsASP\", "{8E43D77C-5F7D-4233-A02B-E879B2113545}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_4415"
@@ -26,6 +26,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "ContactsASP", "ContactsASP\
 		SlnRelativePath = "ContactsASP\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactList.Tests", "ContactList.Tests\ContactList.Tests.csproj", "{2E882E9E-6673-4BBB-B738-B8D6CAEF2EF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{8E43D77C-5F7D-4233-A02B-E879B2113545}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E43D77C-5F7D-4233-A02B-E879B2113545}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E43D77C-5F7D-4233-A02B-E879B2113545}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{2E882E9E-6673-4BBB-B738-B8D6CAEF2EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E882E9E-6673-4BBB-B738-B8D6CAEF2EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E882E9E-6673-4BBB-B738-B8D6CAEF2EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E882E9E-6673-4BBB-B738-B8D6CAEF2EF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

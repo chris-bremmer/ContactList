@@ -1,4 +1,3 @@
-<!--#include file="resources/globals.inc"-->
 <!--#include file="resources/header.inc"-->
 
 

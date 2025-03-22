@@ -24,6 +24,8 @@
 		//easier to get display name for the view
 		public Contact Item { get; set; }
 
+		public string ?SearchString { get; set; }
+
 		public IEnumerable<Contact> Contacts { get; set; }
 	}
 }

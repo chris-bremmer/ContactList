@@ -1,7 +1,5 @@
-<!--#include file="resources/globals.inc"-->
 <!--#include file="resources/header.inc"-->
 <!--#include file="resources/contactmodel.inc"-->
-<!--#include file="resources/data.inc"-->
 <%
     dim db
     set db = new DatabaseHelper

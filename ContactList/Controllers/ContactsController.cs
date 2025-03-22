@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 using ContactList.Data;
 using ContactList.Models;
-using System;
 using ContactList.Utility;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ContactList.Controllers
 {
@@ -21,42 +19,56 @@ namespace ContactList.Controllers
 			_session = new DBSession(context);
 		}
 
-
 		// GET: Contacts
-		public async Task<IActionResult> Contacts()
+		public async Task<IActionResult> Contacts(string? searchString)
 		{
 			int userId = GetUserId();
-				var contacts = await _context.Contacts.Where(c => c.UserId == userId & (c.IsActive == true & c.Favourite == true)).ToListAsync();
-				ContactListViewModel model = new ContactListViewModel(contacts);
-				model.Favourites = true;
-				model.Active = true;
+			var contactsQuery = _context.Contacts.Where(c => c.UserId == userId && c.IsActive && c.Favourite);
 
-				return View(model);
-		}
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				contactsQuery = contactsQuery.Where(c => c.Name.Contains(searchString) || c.Email.Contains(searchString) || c.Phone.Contains(searchString));
+			}
 
-		// GET: Contacts
-		[HttpPost]
-		public async Task<IActionResult> Contacts(bool favourites, bool active)
-		{
-			int userId = GetUserId();
-			var contacts = await _context.Contacts.Where(c => c.UserId == userId & (c.IsActive == active & c.Favourite == favourites)).ToListAsync();
-			ContactListViewModel model = new ContactListViewModel(contacts);
-			model.Favourites = favourites;
-			model.Active = active;
+			var contacts = await contactsQuery.ToListAsync();
+			ContactListViewModel model = new ContactListViewModel(contacts)
+			{
+				Favourites = true,
+				Active = true
+			};
 
 			return View(model);
 		}
 
+		// POST: Contacts
+		[HttpPost]
+		public async Task<IActionResult> Contacts(bool favourites, bool active, string? searchString)
+		{
+			int userId = GetUserId();
+			var contactsQuery = _context.Contacts.Where(c => c.UserId == userId && c.IsActive == active && c.Favourite == favourites);
+
+			if (!string.IsNullOrEmpty(searchString))
+			{
+				contactsQuery = contactsQuery.Where(c => c.Name.Contains(searchString) || c.Email.Contains(searchString) || c.Phone.Contains(searchString));
+			}
+
+			var contacts = await contactsQuery.ToListAsync();
+			ContactListViewModel model = new ContactListViewModel(contacts)
+			{
+				Favourites = favourites,
+				Active = active
+			};
+
+			return View(model);
+		}
 
 		// GET: Edit
 		[Route("Contacts/Edit/{contactId}")]
 		public IActionResult Edit(int contactId)
 		{
-			var contact = _context.Contacts.Where(c => c.ContactId == contactId & c.UserId == GetUserId()).FirstOrDefault();
-
+			var contact = _context.Contacts.FirstOrDefault(c => c.ContactId == contactId && c.UserId == GetUserId());
 			return View(contact);
 		}
-
 
 		// POST: Edit
 		[Route("Contacts/Edit/{contactId}")]
@@ -69,40 +81,39 @@ namespace ContactList.Controllers
 			if (ModelState.IsValid)
 			{
 				_context.SaveChanges();
-				return RedirectToAction(nameof(Contacts), "Contacts");
+				return RedirectToAction(nameof(Contacts));
 			}
 			return View(contact);
 		}
-
 
 		// GET: Delete
 		[Route("Contacts/Delete/{contactId}")]
 		public async Task<IActionResult> Delete(int contactId)
 		{
-			var contact = await _context.Contacts
-		.Where(c => c.ContactId == contactId && c.UserId == GetUserId())
-		.FirstOrDefaultAsync();
+			var contact = await _context.Contacts.FirstOrDefaultAsync(c => c.ContactId == contactId && c.UserId == GetUserId());
 
 			if (contact != null)
 			{
 				_context.Contacts.Remove(contact);
 				await _context.SaveChangesAsync();
 			}
-			return RedirectToAction(nameof(Contacts), "Contacts");
+			return RedirectToAction(nameof(Contacts));
 		}
-
 
 		// GET: Details
 		[Route("Contacts/Details/{contactId}")]
 		public IActionResult Details(int contactId)
 		{
-			var contact = _context.Contacts.Where(c =>
-				c.ContactId == contactId &
-				c.UserId == GetUserId()).FirstOrDefault();
+			var contact = _context.Contacts.FirstOrDefault(c => c.ContactId == contactId && c.UserId == GetUserId());
+
+			if (contact != null)
+			{
+				_session.Set(GetUserId(), "ContactID", contactId.ToString());
+				_session.Set(GetUserId(), "ContactName", contact.Name);
+			}
 
 			return View(contact);
 		}
-
 
 		// GET: Create
 		public IActionResult Create()
@@ -113,7 +124,6 @@ namespace ContactList.Controllers
 			};
 			return View(contact);
 		}
-
 
 		// POST: Create
 		[HttpPost]
@@ -127,7 +137,7 @@ namespace ContactList.Controllers
 			{
 				_context.Add(contact);
 				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Contacts), "Contacts");
+				return RedirectToAction(nameof(Contacts));
 			}
 			return View(contact);
 		}
@@ -153,6 +163,5 @@ namespace ContactList.Controllers
 			}
 			return result;
 		}
-
 	}
 }
