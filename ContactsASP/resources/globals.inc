@@ -42,7 +42,8 @@ Class UserSettings
    private function GetSetting(Key)
         dim result
         result = ""
-        result = Request.Cookies(Key)
+        'Request.Cookies(Key).Path = "bremmer.ca"
+        result = Request.Cookies(Key).Value
 
         GetSetting = result
 

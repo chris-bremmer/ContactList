@@ -70,7 +70,13 @@ namespace ContactList.Controllers
 					// Store user information in session
 					_session.Set(user.UserId, "UserEmail", user.Email);
 					_session.Set(user.UserId, "UserId", user.UserId.ToString());
-					HttpContext.Response.Cookies.Append("UserID", user.UserId.ToString());
+					var cookieOptions = new CookieOptions
+					{
+						Path = "/",
+						Secure = false,
+						SameSite = SameSiteMode.Lax
+					};
+					HttpContext.Response.Cookies.Append("UserID", user.UserId.ToString(), cookieOptions);
 					return RedirectToAction(nameof(Index), "Home");
 				}
 			}
