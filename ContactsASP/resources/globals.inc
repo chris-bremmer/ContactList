@@ -1,68 +1,89 @@
 <%
-    function IsLen(str) 
-        result = false
+function IsLen(str) 
+    result = false
     
-        if Len(str) then
-            result = Len(str) > 0
-        end if
+    if Len(str) then
+        result = Len(str) > 0
+    end if
 
-        IsLen = result
+    IsLen = result
 
-    end function
+end function
 
-    function GetUserID()    
-        set usr = new UserSettings
+function GetUserID()
+    
+    On Error Resume Next
+    set usr = new UserSettings
 
-        if usr.UserID <> "" then
-            GetUserID = usr.UserID
-        else
-            GetUserID = 0
-        end if
+    if usr.UserID <> "" then
+        GetUserID = usr.UserID
+    else
+        GetUserID = 0
+    end if
+    
+If Err.Number <> 0 Then
+    Response.write("<br />GetUserID Error: " & Err.Description)
+    err.Clear
+End If
+end function
 
-    end function
-
-    sub LogOut
-        set sess = new SharedSession
-        sess.Clear
-        set usr = new UserSettings
-        usr.Clear
-    end sub
+public sub LogOut
+    set sess = new SharedSession
+    sess.Clear
+    set usr = new UserSettings
+    usr.Clear
+end sub
 
 
 
 Class UserSettings
 
-   Public Property Let UserID(id)
-      SetSetting "UserId", id
-   End Property 
-   Public Property Get UserID()
-      UserID = GetSetting("UserId")
-   End Property
+Public Property Let UserID(id)
+    SetSetting "UserId", id
+End Property 
+Public Property Get UserID()
+    UserID = GetSetting("UserId")
+End Property
 
-   private function GetSetting(Key)
-        dim result
-        result = ""
-        'Request.Cookies(Key).Path = "bremmer.ca"
-        result = Request.Cookies(Key).Value
+private function GetSetting(Key)
+    dim result
+    result = ""
 
-        GetSetting = result
+    On Error Resume Next
+    result = Request.Cookies(Key)
 
-   end function
+    GetSetting = result
+If Err.Number <> 0 Then
+    Response.write("<br />GetSetting Error: " & Err.Description)
+    err.Clear
+End If
+    
+end function
 
-   private sub SetSetting(Key, Value)
-        Response.Cookies(Key) = Value
-   end sub
+private sub SetSetting(Key, Value)
 
-   public sub Clear()
-   dim int
-    int = 0
-        For Each cookie in Response.Cookies
-            int = int + 1
-            Response.write(int & ") " & cookie & "<br />")
-            Response.Cookies(cookie) = ""
-            Response.Cookies(cookie).Expires = DateAdd("d",-1,now())
-        Next
-   end sub
+    On Error Resume Next
+    Response.Cookies(Key) = Value
+    Response.Cookies(Key).Path = "/"
+    Response.Cookies(Key).Domain = ".bremmer.ca"
+
+    If Err.Number <> 0 Then
+        Response.write("<br />SetSetting Error: " & Err.Description)
+        err.Clear
+    End If
+
+end sub
+
+public sub Clear()
+
+    On Error Resume Next
+    UserID = ""
+    If Err.Number <> 0 Then
+        Response.write("<br />Clear Error: " & Err.Description)
+        err.Clear
+    End If
+
+end sub
 
 
 End Class

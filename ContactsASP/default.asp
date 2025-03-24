@@ -9,7 +9,7 @@
     <% If GetUserID() >0 then%>
     <p><a href="contacts.asp" class="btn btn-primary btn-lg">Contact List &raquo;</a></p>
         <%set uSess = new sharedsession %>
-        <% if uSess("ContactID") > 0 then%>
+        <% if uSess("ContactID") <> "" then%>
     Continue viewing the <a href="contact.asp?id=<%=uSess("ContactID") %>">Contact</a> you were looking at on the CORE site.
             
             <% %>

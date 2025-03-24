@@ -1,8 +1,18 @@
-﻿<!--#include file="resources/globals.inc"-->
-<!--#include file="resources/session.inc"-->
-<!--#include file="resources/data.inc"-->
-<%
+﻿<%
     LogOut
     Session.Abandon
-    Response.Redirect("default.asp")
 %>
+<!--#include file="resources/header.inc"-->
+
+
+        <div class="jumbotron">
+            <h1>VCA Contacts</h1>
+            <p class="lead">You have signed out!</p>
+
+            <p></p>
+       
+            <p>To sign in again, please use the Core site.</p>
+        </div>
+
+
+<!--#include file="resources/footer.inc"-->

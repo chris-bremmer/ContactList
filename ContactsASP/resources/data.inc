@@ -20,14 +20,19 @@ Class DatabaseHelper
     End Sub
 
     private function ConnectionString()
+        on error Resume Next
         dim filePath
         filePath = Server.MapPath("connection.txt")
         filepath = Replace(filepath,"ContactList\ContactsASP","connection")
-        Set objFileToRead = CreateObject("Scripting.FileSystemObject").OpenTextFile(filePath,1)
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        Set objFileToRead = fso.OpenTextFile(filePath,1)
         sqlConnect = objFileToRead.ReadAll()
         objFileToRead.Close
         Set objFileToRead = Nothing
         ConnectionString = sqlConnect
+        If Err.Number <> 0 Then
+            Response.write("<br />ConnectionString Error: " & Err.Description)
+        end if
     end function
 
     ' Open connection

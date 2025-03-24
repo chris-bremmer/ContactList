@@ -43,7 +43,10 @@ namespace ContactList.Controllers
 		public IActionResult Logout()
 		{
 			_session.Clear(GetUserId());
-			HttpContext.Response.Cookies.Delete("UserID");
+			foreach (var cookie in HttpContext.Request.Cookies)
+			{
+				HttpContext.Response.Cookies.Delete(cookie.Key, cookieOptions);
+			}
 			return RedirectToAction(nameof(Index), "Home");
 		}
 
@@ -70,12 +73,8 @@ namespace ContactList.Controllers
 					// Store user information in session
 					_session.Set(user.UserId, "UserEmail", user.Email);
 					_session.Set(user.UserId, "UserId", user.UserId.ToString());
-					var cookieOptions = new CookieOptions
-					{
-						Path = "/",
-						Secure = false,
-						SameSite = SameSiteMode.Lax
-					};
+
+
 					HttpContext.Response.Cookies.Append("UserID", user.UserId.ToString(), cookieOptions);
 					return RedirectToAction(nameof(Index), "Home");
 				}
@@ -94,6 +93,21 @@ namespace ContactList.Controllers
 				int.TryParse(userId, out result);
 			}
 			return result;
+		}
+
+		private CookieOptions cookieOptions
+		{
+			get
+			{
+				string domain = (bool)AppContext.GetData("IsDevelopment") ? ".localhost" : ".bremmer.ca"; ;
+
+				return new CookieOptions
+				{
+					Path = "/",
+					Secure = false,
+					Domain = domain
+				};
+			}
 		}
 	}
 }

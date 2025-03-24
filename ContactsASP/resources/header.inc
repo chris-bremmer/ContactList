@@ -18,12 +18,13 @@
 
     <div class="container">
         <div class="row">
+            <div class=col-sm-4><a href="default.asp">Home</a></div>
             <% if GetUserID()> 0 then %>
             <div class=col-sm-6><a href="signout.asp">Sign Out</a> <%=uSess("UserEmail")%></div>
             <% else %>
             <div class=col-sm-6>Sign In through the CORE site!</div>
             <% end if %>
-            <div class=col-sm-6>User ID: <%=GetUserID()%></div>
+            <div class=col-sm-2></div>
         </div>
     </div>
     <% set uSess = nothing %>

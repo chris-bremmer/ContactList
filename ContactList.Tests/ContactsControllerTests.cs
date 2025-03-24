@@ -49,7 +49,7 @@ namespace ContactList.Tests
 			_context.SaveChanges();
 
 			// Act
-			var result = await _controller.Contacts();
+			var result = await _controller.Contacts("");
 
 			// Assert
 			var viewResult = Assert.IsType<ViewResult>(result);

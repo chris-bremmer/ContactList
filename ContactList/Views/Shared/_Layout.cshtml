@@ -34,9 +34,6 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Logout">Logout</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" href="~/test.asp">Classic Page</a>
-                            </li>
                         }
                         @if (Context.Request.Cookies["UserId"] is null)
                         {
@@ -68,14 +65,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
-    <div>
-        <h3>Cookies</h3>
-        <ul>
-            @foreach (var cookie in Context.Request.Cookies)
-            {
-                <li>@cookie.Key: @cookie.Value</li>
-            }
-        </ul>
-    </div>
 </body>
 </html>
